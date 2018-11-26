@@ -33,7 +33,7 @@ class Game:
         #ask P2 to make move
         #check for win
         #repeat above until one player win or there are no chance to win
-
+'''
     def check_win(self):
         win = False
         where = [0,0,0]
@@ -46,7 +46,7 @@ class Game:
         
         
         return win, where
-
+'''
 
 
 #b = Board()
