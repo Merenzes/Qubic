@@ -33,20 +33,13 @@ class Game:
         #ask P2 to make move
         #check for win
         #repeat above until one player win or there are no chance to win
-'''
+
     def check_win(self):
         win = False
-        where = [0,0,0]
-        #columns between planes
-        if (self.game_board[0,0,0] == self.gmae_board[1,0,0] and 
-            self.game_board[0,0,0] == self.gmae_board[2,0,0] and
-            self.game_board[0,0,0] == self.gmae_board[3,0,0]):
-                win = True
-                where = [0,0,0]
-        
+        where = [0,0,0]        
         
         return win, where
-'''
+
 
 
 #b = Board()
