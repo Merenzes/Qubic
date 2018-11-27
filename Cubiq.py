@@ -23,6 +23,22 @@ class Board:
             return True
         else:
             return False
+    
+    def win_condition(self):
+        test_elements = [-4, 4]
+        if (
+            np.any(np.isin(np.sum(self.board, axis = 0), test_elements)) or 
+            np.any(np.isin(np.sum(self.board, axis = 1), test_elements)) or 
+            np.any(np.isin(np.sum(self.board, axis = 2), test_elements)) or
+            np.any(np.isin(np.einsum('iii->i', self.board), test_elements)) or
+            np.any(np.isin(np.einsum('iij->ij', self.board), test_elements)) or
+            np.any(np.isin(np.einsum('iji->ij', self.board), test_elements))
+        ):
+            return True
+        else:
+            return False
+
+
 
 class Game:
     game_board = Board()
@@ -35,15 +51,16 @@ class Game:
     def game_loop(self):
         # start game
         # loop start
-        # ask P1 to make move
-        self.player_move(self.player_one)
-        # check for win condition
-        # ask P2 to make move
-        self.player_move(self.player_two)
-        # check for win condition
-        # repeat above until one player win or there are no chance to win
-        # loop end
-        # display who win
+        while not self.someone_won():
+            # ask P1 to make move
+            self.player_move(self.player_one)
+            # ask P2 to make move
+            if self.someone_won():
+                print(self.player_one + ' WON!!!')
+            else:  
+                self.player_move(self.player_two)
+                if self.someone_won():
+                    print(self.player_two + " WON!!!")
     
     # ask player for coordinates to place his mark
     # check if this spot is avilable
@@ -64,27 +81,30 @@ class Game:
             self.game_board.mark_P2(z, x, y)
             self.game_board.print_board()
 
-    def check_win(self):
+    def someone_won(self):
         win = False
-        where = [0,0,0]
-        
-        return win, where
+        if self.game_board.win_condition():
+            return True
+        else:
+            return False
 
 
+board = np.arange(64).reshape(4,4,4)
+print(board)
 
-#b = Board()
-#b.print_board()
-#b.mark_cross(0,1,2)
-#b.print_board()
-
-
-#board = np.arange(64).reshape(4,4,4)
-#print(board)
 #print("up plane first column")
 #print(board[0,:,0])
 #print("[0,0] from 2 planes")
 #print(board[:,0,0])
 #s = np.all(board == board[:,0,0])
 #print(s)
+# print('#'*25)
+# b = np.diagonal(np.diagonal(board, axis1=0, axis2=1), axis1=1, axis2=0)
 
-g = Game()
+# print('3d diagonals') 
+# print(np.einsum('iii->i', board))
+# print('2d diagonals')
+# print(np.einsum('iij->ij', board))
+# print('#'*25)
+# print(np.einsum('iji->ij', board))
+# g = Game()
