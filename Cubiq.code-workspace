@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "log"
+		},
+		{
+			"path": ".",
+			"name": "Cubiq"
+		}
+	],
+	"settings": {}
+}
