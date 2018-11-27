@@ -29,10 +29,7 @@ class Board:
         if (
             np.any(np.isin(np.sum(self.board, axis = 0), test_elements)) or 
             np.any(np.isin(np.sum(self.board, axis = 1), test_elements)) or 
-            np.any(np.isin(np.sum(self.board, axis = 2), test_elements)) or
-            np.any(np.isin(np.einsum('iii->i', self.board), test_elements)) or
-            np.any(np.isin(np.einsum('iij->ij', self.board), test_elements)) or
-            np.any(np.isin(np.einsum('iji->ij', self.board), test_elements))
+            np.any(np.isin(np.sum(self.board, axis = 2), test_elements))
         ):
             return True
         else:
@@ -54,7 +51,7 @@ class Game:
         while not self.someone_won():
             # ask P1 to make move
             self.player_move(self.player_one)
-            # ask P2 to make move
+            # ask P2(AI) to make move
             if self.someone_won():
                 print(self.player_one + ' WON!!!')
             else:  
@@ -77,34 +74,21 @@ class Game:
             self.game_board.mark_P1(z, x, y)
             self.game_board.print_board()
         else:
-            z, x, y = self.ask_for_coordinates(player)
+            z, x, y = self.game_AI()
             self.game_board.mark_P2(z, x, y)
             self.game_board.print_board()
 
     def someone_won(self):
-        win = False
         if self.game_board.win_condition():
             return True
         else:
             return False
 
+    def game_AI(self):
+        for z in range(3):
+            for y in range(3):
+                for x in range(3):
+                    if not self.game_board.is_occpied(z, x, y):
+                        return z, x, y
 
-board = np.arange(64).reshape(4,4,4)
-print(board)
-
-#print("up plane first column")
-#print(board[0,:,0])
-#print("[0,0] from 2 planes")
-#print(board[:,0,0])
-#s = np.all(board == board[:,0,0])
-#print(s)
-# print('#'*25)
-# b = np.diagonal(np.diagonal(board, axis1=0, axis2=1), axis1=1, axis2=0)
-
-# print('3d diagonals') 
-# print(np.einsum('iii->i', board))
-# print('2d diagonals')
-# print(np.einsum('iij->ij', board))
-# print('#'*25)
-# print(np.einsum('iji->ij', board))
-# g = Game()
+g = Game()
